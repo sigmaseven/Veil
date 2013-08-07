@@ -42,6 +42,7 @@ def generateConfig(options):
 	config += '# The path to the metasploit framework, for example: /usr/share/metasploit-framework/\n'
 	config += 'METASPLOIT_PATH="'+options['METASPLOIT_PATH']+'"\n\n'
 	
+	config = config.replace("\\","/");
 	f = open("veil.py", 'w')
 	f.write(config)
 	f.close()
