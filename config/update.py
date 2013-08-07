@@ -90,7 +90,12 @@ if __name__ == '__main__':
 			options["OPERATING_SYSTEM"] = "Linux"
 			options["TERMINAL_CLEAR"] = "clear"
 			print " [*] TERMINAL_CLEAR = clear"
-			msfpath = raw_input(" [>] Please enter the path of your metasploit installation: ")
+			
+			msfpath = ""
+			
+			while len(msfpath) <= 0:
+				msfpath = raw_input(" [>] Please enter the path of your metasploit installation: ")
+
 			options["METASPLOIT_PATH"] = msfpath
 		
 		veil_path = "/".join(os.getcwd().split("/")[:-1]) + "/"
@@ -124,7 +129,11 @@ if __name__ == '__main__':
 		options["TEMP_DIR"]="C:\\Windows\\Temp\\"
 		print " [*] TEMP_DIR = C:\\Windows\\Temp\\"
 		
-		msfpath = raw_input(" [>] Please enter the path of your metasploit installation: ")
+		msfpath = ""
+		
+		while len(msfpath) <= 0:
+			msfpath = raw_input(" [>] Please enter the path of your metasploit installation: ")
+
 		options["METASPLOIT_PATH"] = msfpath
 	
 	# unsupported platform... 
