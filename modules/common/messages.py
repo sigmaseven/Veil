@@ -24,10 +24,10 @@ def title():
 	
 	# check to make sure the current OS is supported,
 	# print a warning message if it's not and exit
-	if veil.OPERATING_SYSTEM == "Windows" or veil.OPERATING_SYSTEM == "Unsupported":
-		print helpers.color(' [!] ERROR: Your operating system is not currently supported...\n', warning=True)
-		print helpers.color(' [!] ERROR: Request your distribution at the GitHub repository...\n', warning=True)
-		sys.exit()
+	#if veil.OPERATING_SYSTEM == "Windows" or veil.OPERATING_SYSTEM == "Unsupported":
+		#print helpers.color(' [!] ERROR: Your operating system is not currently supported...\n', warning=True)
+		#print helpers.color(' [!] ERROR: Request your distribution at the GitHub repository...\n', warning=True)
+		#sys.exit()
 
 def helpmsg(commands, showTitle=True):
 	"""
