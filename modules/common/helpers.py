@@ -4,6 +4,7 @@ Contains any miscellaneous helper methods useful across multiple modules.
 """
 
 import random, string, base64, zlib, re, textwrap
+from config import veil
 
 def obfuscateNum(N, mod):
 	"""
@@ -23,16 +24,21 @@ def color(string, status=True, warning=False, bold=True):
 	
 	Set "warning=True" for red.
 	"""
-	attr = []
-	if status:
-		# green
-		attr.append('32')
-	if warning:
-		# red
-		attr.append('31')
-	if bold:
-		attr.append('1')
-	return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+	#Unfortunately Windows console doesn't natively support ANSI color, so we just return
+	#the string instead.
+	if(veil.OPERATING_SYSTEM != "Windows"):
+		attr = []
+		if status:
+			# green
+			attr.append('32')
+		if warning:
+			# red
+			attr.append('31')
+		if bold:
+			attr.append('1')
+		return '\x1b[%sm%s\x1b[0m' % (';'.join(attr), string)
+	else: 
+		return string 
 	
 def inflate( b64string ):
 	"""
