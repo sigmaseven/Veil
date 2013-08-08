@@ -9,6 +9,7 @@ from modules.common import shellcode
 from modules.common import messages
 from modules.common import helpers
 from config import veil
+import subprocess
 
 def supportingFiles(language, payloadFile, options):
 	"""
@@ -44,31 +45,26 @@ def supportingFiles(language, payloadFile, options):
 			nameBase = payloadFile.split("/")[-1].split(".")[0]
 
 			# Generate setup.py File for Py2Exe
-			SetupFile = open(veil.PAYLOAD_SOURCE_PATH + '/setup.py', 'w')
+			path = veil.PAYLOAD_SOURCE_PATH
+			SetupFile = open(path + '/setup.py', 'w')
 			SetupFile.write("from distutils.core import setup\n")
 			SetupFile.write("import py2exe, sys, os\n\n")
 			SetupFile.write("setup(\n")
-			SetupFile.write("\toptions = {'py2exe': {'bundle_files': 1}},\n")
+			SetupFile.write("\toptions = {'py2exe': {'bundle_files': 1,\n\t\t'dist_dir': '" + path + "/dist'}},\n")
+			#TODO - fix this zipfile option
 			SetupFile.write("\tzipfile = None,\n")
-			SetupFile.write("\twindows=['"+nameBase+".py']\n")
+			SetupFile.write("\twindows=['"+path+nameBase+".py']\n")
 			SetupFile.write(")")
 			SetupFile.close()
 
-			# Generate Batch script for Compiling on Windows Using Py2Exe
-			RunmeFile = open(veil.PAYLOAD_SOURCE_PATH + '/runme.bat', 'w')
-			RunmeFile.write('rem Batch Script for compiling python code into an executable\n')
-			RunmeFile.write('rem on windows with py2exe\n')
-			RunmeFile.write('rem Usage: Drop into your Python folder and click, or anywhere if Python is in your system path\n\n')
-			RunmeFile.write("python setup.py py2exe\n")
-			RunmeFile.write('cd dist\n')
+			# Auto-generate the EXE file.
+			os.system("python " + path + "/setup.py py2exe")
+			os.system("move " + path.replace("/","\\") + "\\dist\\" + nameBase + ".exe " + path.replace("/","\\"))
+			print "attempting: move " + path.replace("/","\\") + "\\dist\\" + nameBase + ".exe " + path.replace("/","\\")
+			os.system("rmdir /S /Q " + path.replace("/", "\\") + "\\dist")
 			exeName = ".".join(payloadFile.split(".")[:-1]) + ".exe"
-			RunmeFile.write('move '+nameBase+'.exe ../\n')
-			RunmeFile.write('cd ..\n')
-			RunmeFile.write('rmdir /S /Q build\n')
-			RunmeFile.write('rmdir /S /Q dist\n')
-			RunmeFile.close()
 
-			print helpers.color("\npy2exe files 'setup.py' and 'runme.bat' written to:\n"+veil.PAYLOAD_SOURCE_PATH + "\n")
+			print helpers.color(" [*] EXE written to: "+veil.PAYLOAD_SOURCE_PATH + "\n")
 
 		# Else, Use Pyinstaller (used by default)
 		else:
